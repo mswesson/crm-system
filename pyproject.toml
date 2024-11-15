@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "crm-system"
+version = "0.1.0"
+description = "CRM helps organizations build and maintain customer relationships while tracking transactions. Employees can access a complete interaction history, including past transactions, requests, and preferences. It stores essential customer details, enabling quick responses, improved service, and increased productivity."
+authors = ["Eduard Komarov <rango.adik@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
