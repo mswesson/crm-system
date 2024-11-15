@@ -1,0 +1,45 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Service update
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>Service update</h1>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form_create_services">
+      <div>
+        {{ form.title.label_tag }}
+        {{ form.title }}
+
+        {% if form.title.errors %}
+          <div class="error">{{ form.title.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        {{ form.description.label_tag }}
+        {{ form.description }}
+        {% if form.description.errors %}
+          <div class="error">{{ form.description.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        {{ form.price.label_tag }}
+        {{ form.price }}
+        {% if form.price.errors %}
+          <div class="error">{{ form.price.errors.0 }}</div>
+        {% endif %}
+      </div>
+    </div>
+    <button class="user_profile_bottom_buttoms" type="submit">Update</button>
+    <button class="user_profile_bottom_buttoms">
+      <a href="{% url "services:services_list" %}">Back</a>
+    </button>
+
+  </form>
+{% endblock body %}

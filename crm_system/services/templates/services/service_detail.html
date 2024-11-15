@@ -1,0 +1,24 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Service detail
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>{{ object.title }}</h1>
+  </div>
+  <div class="user_profile_other_info">
+    <p>{{ object.description }}</p>
+    <b><p>${{ object.price }}</p></b>
+  </div>
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "services:services_list" %}">Back</a>
+  </button>
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "services:services_update" pk=object.pk %}">Update</a>
+  </button>
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "services:services_confirm_delete" pk=object.pk %}">Delete</a>
+  </button>
+{% endblock body %}
