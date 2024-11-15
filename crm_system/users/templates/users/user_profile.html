@@ -1,0 +1,44 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Profile {{ object.username }}
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    {% if object.pk == user.pk %}
+      <h1>My profile @{{ object.username }}</h1>
+    {% else %}
+      <h1>Profile @{{ object.username }}</h1>
+    {% endif %}
+  </div>
+  <div class="user_profile_other_info">
+    <p><b>{{ object.first_name}} {{ object.last_name }}</b></p>
+    <p>Email: {{ object.email }}</p>
+    <p>Role: 
+      {% if object.groups.all %}
+        {% for role in object.groups.all %}
+          {{ role }}{% if not forloop.last %}, {% endif %}  
+        {% endfor %}
+      {% else %}
+        role missing
+      {% endif %}
+    </p>
+  </div>
+  {% if user.is_staff and user.pk == object.pk %}
+  <div class="flex_box_left">
+    <div class="user_profile_bottom_buttoms">
+      <button><a href="https://www.google.com">Services</a></button>
+    </div>
+    <div class="user_profile_bottom_buttoms">
+      <button><a href="https://www.google.com">Advertising companies</a></button>
+    </div>
+    <div class="user_profile_bottom_buttoms">
+      <button><a href="https://www.google.com">Clients</a></button>
+    </div>
+    <div class="user_profile_bottom_buttoms">
+      <button><a href="https://www.google.com">Potential clients</a></button>
+    </div>
+  </div>
+  {% endif %}
+{% endblock body %}
