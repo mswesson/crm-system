@@ -25,3 +25,6 @@ class Service(models.Model):
 
     def short_description(self):
         return self.description[:140] + "..."
+
+    def __str__(self):
+        return self.title

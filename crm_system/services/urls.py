@@ -14,13 +14,13 @@ urlpatterns = [
     path("", ServicesListView.as_view(), name="services_list"),
     path("create/", ServicesCreateView.as_view(), name="services_create"),
     path(
-        "update/<int:pk>", ServicesUpdateView.as_view(), name="services_update"
+        "<int:pk>/update", ServicesUpdateView.as_view(), name="services_update"
     ),
     path(
-        "delete/<int:pk>", ServicesDeleteView.as_view(), name="services_delete"
+        "<int:pk>/delete", ServicesDeleteView.as_view(), name="services_delete"
     ),
     path(
-        "delete/<int:pk>/confirm",
+        "<int:pk>/delete/confirm/",
         ServicesDeleteConfirmView.as_view(),
         name="services_confirm_delete",
     ),

@@ -8,12 +8,22 @@
   <div class="user_profile_head_info flex_box">
     <h1>List of services</h1>
   </div>
-  <button class="user_profile_bottom_buttoms">
-    <a href="{% url "users:profile" pk=user.pk %}">My profile</a>
-  </button>
-  <button class="user_profile_bottom_buttoms">
-    <a href="{% url "services:services_create" %}">Create a new service</a>
-  </button>
+  <div class="flex_box_left flex_box_left_right">
+    <div>
+      <button class="user_profile_bottom_buttoms">
+        <a href="{% url "users:profile" pk=user.pk %}">My profile</a>
+      </button>
+      <button class="user_profile_bottom_buttoms">
+        <a href="{% url "services:services_create" %}">Create a new service</a>
+      </button>
+    </div>
+    <div>
+      <form style="margin: 10px;" method="get" action="{% url 'services:services_list' %}">
+        <input style="width: auto;" type="text" name="search" placeholder="Поиск..." value="{{ request.GET.search }}">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </div>
   <div>
     {% for service in object_list %}
       <div class="services_list_object">
@@ -32,5 +42,23 @@
           </button>
       </div>
     {% endfor %}
+  </div>
+  
+  <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
   </div>
 {% endblock body %}

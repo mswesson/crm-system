@@ -12,8 +12,8 @@
     {% csrf_token %}
     <div class="form_create_services">
       <div>
-        {{ form.title.label_tag }}
-        {{ form.title }}
+        <p>{{ form.title.label_tag }}</p>
+        <p>{{ form.title }}</p>
 
         {% if form.title.errors %}
           <div class="error">{{ form.title.errors.0 }}</div>
@@ -21,16 +21,16 @@
       </div>
 
       <div>
-        {{ form.description.label_tag }}
-        {{ form.description }}
+        <p>{{ form.description.label_tag }}</p>
+        <p>{{ form.description }}</p>
         {% if form.description.errors %}
           <div class="error">{{ form.description.errors.0 }}</div>
         {% endif %}
       </div>
 
       <div>
-        {{ form.price.label_tag }}
-        {{ form.price }}
+        <p>{{ form.price.label_tag }}</p>
+        <p>{{ form.price }}</p>
         {% if form.price.errors %}
           <div class="error">{{ form.price.errors.0 }}</div>
         {% endif %}

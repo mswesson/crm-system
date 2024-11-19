@@ -1,0 +1,26 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Advertising campaign details
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>{{ object.title }}</h1>
+  </div>
+  <div class="user_profile_other_info">
+    <p><b>Promoted service:</b> {{ object.service }}</p>
+    <p><b>Promotion channel:</b> {{ object.promotion_channel }}</p>
+    <p><b>Advertising campaign budget:</b> ${{ object.budget }}</p>
+    <p><b>Potential clients: </b>!!! необходимо доделать !!!</p>
+  </div>
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "advertising:advertising_list" %}">Back</a>
+  </button>
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "advertising:advertising_update" pk=object.pk %}">Update</a>
+  </button>
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "advertising:advertising_delete_confirm" pk=object.pk %}">Delete</a>
+  </button>
+{% endblock body %}

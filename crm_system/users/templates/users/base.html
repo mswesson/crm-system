@@ -20,12 +20,18 @@
     .flex_box_left {
       display: flex;
     }
+    .flex_box_left_right {
+      justify-content: space-between;
+    }
     body {
-      max-width: 600px;
-      margin: 50px auto 50px auto;
+      min-width: 600px;
+      margin: 5%;
       background-color:rgb(230, 230, 230);
       border-radius: 10px;
       border: 3px solid gray;
+    }
+    .create_update_delete_page {
+      max-width: 600px;
     }
     button {
       cursor: pointer;
@@ -50,11 +56,14 @@
     .form_create_services > p {
       margin: 15px 0 0 0;
     }
-    textarea, input {
+    textarea, input, select {
       border-radius: 6px;
       border: 2px solid gray;
       padding: 5px;
       width: 550px;
+    }
+    select {
+      width: 563.84px;
     }
     .error {
       color: brown;
@@ -80,6 +89,13 @@
     }
     .button_good {
       background-color: rgb(189, 252, 187);
+    }
+    .pagination {
+      margin: 10px;
+      text-align: center;
+    }
+    p {
+      margin: 0;
     }
 
   </style>

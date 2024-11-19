@@ -9,6 +9,7 @@ from django.views.generic import (
     DetailView,
 )
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 from .models import Service
 from .forms import ServiceForm
@@ -23,6 +24,23 @@ class ServicesListView(ListView):
 
     model = Service
     template_name = "services/services_list.html"
+    paginate_by = 3
+
+    def get_queryset(self):
+        """
+        Кастомная подгрузка объектов модели
+
+        Реализовал поиск с помощью GET запроса с параметром 'search'
+        """
+        search = self.request.GET.get("search")
+        queryset = super().get_queryset()
+
+        if search:
+            queryset = queryset.filter(
+                Q(title__icontains=search) | Q(description__icontains=search)
+            )
+
+        return queryset
 
 
 class ServicesCreateView(CreateView):
@@ -54,9 +72,10 @@ class ServicesUpdateView(UpdateView):
 class ServicesDeleteConfirmView(View):
     """
     Подтверждение удаления
-    
+
     Имеет ограничение доступа, могут удалять только маркетологи
     """
+
     def get(self, request: HttpRequest, *args, **kwargs):
         pk = self.kwargs.get("pk")
         service = Service.objects.get(pk=pk)
