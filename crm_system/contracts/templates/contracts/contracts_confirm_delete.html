@@ -1,0 +1,23 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Confirm delete
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>Confirm contract deletion</h1>
+  </div>
+  <div class="user_profile_other_info">
+    <p></p>Are you sure you want to delete the contract <b>"{{ object.title }}"</b> this will result in a complete deletion without the possibility of restoring the object?</p>
+  </div>
+  <div class="flex_box_left">
+    <form action="{% url "contracts:contracts_delete" pk=object.pk %}" method="post">
+      {% csrf_token %}
+      <button class="user_profile_bottom_buttoms button_bad">Delete</button>
+    </form>
+    <button class="user_profile_bottom_buttoms button_good">
+      <a href="{% url "contracts:contracts_list" %}">Back</a>
+    </button>
+  </div>
+{% endblock body %}

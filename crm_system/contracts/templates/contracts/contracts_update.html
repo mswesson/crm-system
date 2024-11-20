@@ -1,0 +1,66 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Creating a contract
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>Creating a contract</h1>
+  </div>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form_create_services">
+
+      <div>
+        <p>{{ form.title.label_tag }}</p>
+        <p>{{ form.title }}</p>
+        {% if form.title.errors %}
+          <div class="error">{{ form.title.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.service.label_tag }}</p>
+        <p>{{ form.service }}</p>
+        {% if form.service.errors %}
+          <div class="error">{{ form.service.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.documentation.label_tag }}</p>
+        <div class="input_file_update">
+          <p>Curent file: 
+            <button><a target="_blank" href="{{ form.instance.documentation.url }}">Go to file</a></button>
+          </p>
+          Upload a new file: {{ form.documentation }}
+        </div>
+        {% if form.documentation.errors %}
+          <div class="error">{{ form.documentation.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.end_date.label_tag }}</p>
+        <p>{{ form.end_date }}</p>
+        {% if form.end_date.errors %}
+          <div class="error">{{ form.end_date.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.budget.label_tag }}</p>
+        <p>{{ form.budget }}</p>
+        {% if form.budget.errors %}
+          <div class="error">{{ form.budget.errors.0 }}</div>
+        {% endif %}
+      </div>
+    </div>
+    <button class="user_profile_bottom_buttoms" type="submit">Create</button>
+    <button class="user_profile_bottom_buttoms">
+      <a href="{% url "contracts:contracts_list" %}">Back</a>
+    </button>
+
+  </form>
+{% endblock body %}

@@ -9,6 +9,9 @@ __pycache__/
 # Databases
 database/
 
+# Medias
+media/
+
 # Distribution / packaging
 .Python
 build/
