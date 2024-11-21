@@ -1,8 +1,12 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.utils.timezone import make_aware
 from django.db.models import Q
+from clients.models import Client
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import (
     CreateView,
     ListView,
@@ -16,10 +20,16 @@ from .models import Contract
 from .forms import ContractForm
 
 
-class ContractsListView(ListView):
+class ContractsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Contract
     template_name = "contracts/contracts_list.html"
     paginate_by = 3
+
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name__in=[settings.GROUPS[1], settings.GROUPS[4]]
+        ).exists()
+        return passes
 
     def get_queryset(self):
         """
@@ -39,26 +49,69 @@ class ContractsListView(ListView):
         return queryset
 
 
-class ContractCreateView(CreateView):
+class ContractCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Contract
     form_class = ContractForm
     template_name = "contracts/contracts_create.html"
     success_url = reverse_lazy("contracts:contracts_list")
 
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name__in=[settings.GROUPS[1], settings.GROUPS[4]]
+        ).exists()
+        return passes
 
-class ContractUpdateView(UpdateView):
+    def get_initial(self):
+        client_pk = self.request.GET.get("client_pk")
+        service_pk = self.request.GET.get("service_pk")
+        initial = super().get_initial()
+
+        initial["client"] = client_pk
+        initial["service"] = service_pk
+        return initial
+
+    def form_valid(self, form):
+        client_pk = form.data.get("client")
+        client = Client.objects.get(pk=client_pk)
+
+        if not client:
+            raise ValidationError("Client not found")
+        if client.is_active:
+            raise ValidationError("The client must be inactive")
+
+        end_date = form.data.get("end_date")
+
+        client.next_interaction_date = end_date
+        client.is_active = True
+        client.save()
+        return super().form_valid(form)
+
+
+class ContractUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Contract
     form_class = ContractForm
     template_name = "contracts/contracts_update.html"
     success_url = reverse_lazy("contracts:contracts_list")
 
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name__in=[settings.GROUPS[1], settings.GROUPS[4]]
+        ).exists()
+        return passes
 
-class ContractDetailView(DetailView):
+
+class ContractDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Contract
     template_name = "contracts/contracts_detail.html"
 
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name__in=[settings.GROUPS[1], settings.GROUPS[4]]
+        ).exists()
+        return passes
 
-class ContractDeleteConfirmView(View):
+
+class ContractDeleteConfirmView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         pk = self.kwargs.get("pk")
         contract = Contract.objects.get(pk=pk)
@@ -67,7 +120,27 @@ class ContractDeleteConfirmView(View):
             request, "contracts/contracts_confirm_delete.html", context
         )
 
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name__in=[settings.GROUPS[1], settings.GROUPS[4]]
+        ).exists()
+        return passes
 
-class ContractDeleteView(DeleteView):
+
+class ContractDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Contract
     success_url = reverse_lazy("contracts:contracts_list")
+
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name__in=[settings.GROUPS[1], settings.GROUPS[4]]
+        ).exists()
+        return passes
+
+    def form_valid(self, form):
+        object: Contract = self.object
+        object.client.is_active = False
+
+        object.client.next_interaction_date = timezone.now()
+        object.client.save()
+        return super().form_valid(form)

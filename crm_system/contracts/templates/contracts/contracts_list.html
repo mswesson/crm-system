@@ -8,39 +8,35 @@
   <div class="user_profile_head_info flex_box">
     <h1>List of contracts</h1>
   </div>
+
   <div class="flex_box_left flex_box_left_right">
     <div>
       <button class="user_profile_bottom_buttoms">
         <a href="{% url "users:profile" pk=user.pk %}">My profile</a>
       </button>
-      <button class="user_profile_bottom_buttoms">
-        <a href="{% url "contracts:contracts_create" %}">Create a new contract</a>
-      </button>
     </div>
+
     <div>
-      <form style="margin: 10px;" method="get" action="{% url 'contracts:contracts_list' %}">
+      <form method="get" action="{% url 'contracts:contracts_list' %}">
         <input style="width: auto;" type="text" name="search" placeholder="Search by title or service" value="{{ request.GET.search }}">
         <button type="submit">Search</button>
       </form>
     </div>
   </div>
+
   <div>
     {% for object in object_list %}
       <div class="services_list_object">
-        <p class="services_list_object_title"><b>{{ object.title }}</b></p>
+        <p class="services_list_object_title">
+          <b>
+            <a href="{% url "contracts:contracts_detail" pk=object.pk %}">{{ object.title }}</a>
+          </b>
+        </p>
+
         <div class="services_list_object_other_info">
           <p>Service: {{ object.service }}</p>
-          <p>Client: Вася Пупкин</p>
+          <p>Client: {{ object.client }}</p>
         </div>
-          <button class="user_profile_bottom_buttoms">
-            <a href="{% url "contracts:contracts_detail" pk=object.pk %}">Detail</a>
-          </button>
-          <button class="user_profile_bottom_buttoms">
-            <a href="{% url "contracts:contracts_update" pk=object.pk %}">Update</a>
-          </button>
-          <button class="user_profile_bottom_buttoms">
-            <a href="{% url "contracts:contracts_delete_confirm" pk=object.pk %}">Delete</a>
-          </button>
       </div>
     {% endfor %}
   </div>

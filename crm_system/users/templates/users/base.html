@@ -4,6 +4,7 @@
   <style>
     .user_profile_head_info > * {
       margin: 10px 10px;
+      text-align: center;
     }
     .user_profile_other_info {
       margin: 20px 10px;
@@ -19,9 +20,14 @@
     }
     .flex_box_left {
       display: flex;
+      justify-content: left;
+      align-items: center;
     }
     .flex_box_left_right {
       justify-content: space-between;
+    }
+    .flex_box_left > * {
+      margin: 10px;
     }
     body {
       width: 585px;
@@ -35,7 +41,7 @@
     }
     button {
       cursor: pointer;
-      padding: 5px 15px;
+      padding: 5px 10px;
       border-radius: 6px;
       border: 2px solid gray;
       background-color: rgb(220, 220, 220);
@@ -115,6 +121,20 @@
       padding: 0;
       width: 300px;
       border: 0 none;
+    }
+    .text_container {
+      word-wrap: break-word;
+      border: 3px solid gray;
+      border-radius: 7px;
+      padding: 10px;
+    }
+    .text_container_title {
+      text-align: center;
+      margin: 0 0 10px 0;
+    }
+    .button_login_panel {
+      margin-top: 20px;
+      padding: 10px 50px;
     }
 
   </style>

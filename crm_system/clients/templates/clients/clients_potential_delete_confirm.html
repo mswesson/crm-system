@@ -1,0 +1,26 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Confirm delete
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info">
+    <h1>Confirmation of removal of a potential client</h1>
+  </div>
+  <div class="user_profile_other_info">
+    <p>
+      Are you sure you want to delete potential client "{{ object.first_name }} {{ object.last_name }}"? 
+      This will permanently delete the object and there is no way to restore it?
+    </p>
+  </div>
+  <div class="flex_box_left">
+    <form action="{% url "clients:potential_delete" pk=object.pk %}" method="post">
+      {% csrf_token %}
+      <button class="user_profile_bottom_buttoms button_bad">Delete</button>
+    </form>
+    <button class="user_profile_bottom_buttoms button_good">
+      <a href="{% url "clients:potential_detail" pk=object.pk %}">Back</a>
+    </button>
+  </div>
+{% endblock body %}

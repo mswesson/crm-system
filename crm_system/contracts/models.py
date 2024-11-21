@@ -18,6 +18,7 @@ class Contract(models.Model):
     Хранит информацию:
         название
         предоставляемую услугу (связь с Услугой)
+        клиент (связь с клиентом)
         файл с документом
         дату заключения (автоматически создается при создании)
         период действия (до какого числа и года)
@@ -32,6 +33,12 @@ class Contract(models.Model):
         on_delete=models.CASCADE,
         related_name="contracts",
     )
+    client = models.OneToOneField(
+        "clients.Client",
+        on_delete=models.CASCADE,
+        null=False,
+        related_name="contract",
+    )
     documentation = models.FileField(
         null=True, upload_to="contracts/documentations/"
     )
@@ -45,3 +52,10 @@ class Contract(models.Model):
             MinValueValidator(0, "The contract amount cannot be below zero")
         ],
     )
+
+    class Meta:
+        ordering = ["start_date", "pk"]
+
+    def __str__(self) -> str:
+        full_title = f"{self.pk} - {self.title}"
+        return full_title

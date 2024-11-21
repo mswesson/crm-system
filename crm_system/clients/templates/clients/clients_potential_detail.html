@@ -1,0 +1,60 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Potential client
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>Potential client</h1>
+  </div>
+  <div class="user_profile_other_info">
+    <p><b>Full name:</b> 
+      {{ object.first_name }} 
+
+      {% if object.middle_name %}
+        {{ object.middle_name }} 
+      {% endif %}
+
+      {{ object.last_name }}
+    </p>
+    <p><b>Phone number:</b> {{ object.phone_number }}</p>
+    <p><b>Email:</b> {{ object.email }}</p>
+    <p>
+      <b>Interested in the service: </b> 
+      <a href="{% url "services:services_detail" pk=object.advertising_company.service.pk %}">
+        {{ object.advertising_company.service.title }}
+      </a>
+    </p>
+    <p>
+      <b>Presented by the advertising company: </b> 
+      <a href="{% url "advertising:advertising_detail" pk=object.advertising_company.pk %}">
+        {{ object.advertising_company.title }}
+      </a>
+    </p>
+    <p><b>Next interaction date: </b>{{ object.next_interaction_date }}</p>
+    <div class="text_container" >
+      <p class="text_container_title"><b>Notes</b></p>
+      {{ object.notes }}
+    </div>
+  </div>
+
+  <form method="get" action="{% url 'contracts:contracts_create' %}">
+      <input type="hidden" name="client_pk" value="{{ object.pk }}">
+      <input type="hidden" name="service_pk" value="{{ object.advertising_company.service.pk}}">
+      <button type="submit">Sign the contract</button>
+  </form>
+
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "clients:potential_list" %}">Potential clients list</a>
+  </button>
+
+
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "clients:potential_update" pk=object.pk %}">Update</a>
+  </button>
+
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "clients:potential_delete_confirm" pk=object.pk %}">Delete</a>
+  </button>
+{% endblock body %}

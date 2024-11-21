@@ -30,3 +30,6 @@ class AdvertisingCompany(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0, "The price cannot be below zero")],
     )
+
+    def __str__(self) -> str:
+        return self.title

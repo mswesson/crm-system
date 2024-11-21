@@ -21,6 +21,14 @@
       </div>
 
       <div>
+        <p>{{ form.client.label_tag }}</p>
+        <p>{{ form.client }}</p>
+        {% if form.client.errors %}
+          <div class="error">{{ form.client.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
         <p>{{ form.service.label_tag }}</p>
         <p>{{ form.service }}</p>
         {% if form.service.errors %}

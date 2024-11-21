@@ -1,23 +1,29 @@
 {% extends "users/base.html" %}
 
 {% block title %}
-  Confirm delete
+  Confirm termination
 {% endblock title %}
 
 {% block body %}
+
   <div class="user_profile_head_info flex_box">
-    <h1>Confirm contract deletion</h1>
+    <h1>Confirm the termination of the contract</h1>
   </div>
+
   <div class="user_profile_other_info">
-    <p></p>Are you sure you want to delete the contract <b>"{{ object.title }}"</b> this will result in a complete deletion without the possibility of restoring the object?</p>
+    Terminating the contract will return the client to potential status and set the 
+    date of the next interaction to the current one.
   </div>
+
   <div class="flex_box_left">
     <form action="{% url "contracts:contracts_delete" pk=object.pk %}" method="post">
       {% csrf_token %}
-      <button class="user_profile_bottom_buttoms button_bad">Delete</button>
+      <button class="user_profile_bottom_buttoms">Terminate</button>
     </form>
-    <button class="user_profile_bottom_buttoms button_good">
-      <a href="{% url "contracts:contracts_list" %}">Back</a>
+
+    <button class="user_profile_bottom_buttoms">
+      <a href="{% url "contracts:contracts_detail" pk=object.pk %}">Cancel</a>
     </button>
   </div>
+
 {% endblock body %}

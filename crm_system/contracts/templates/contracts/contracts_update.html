@@ -21,18 +21,10 @@
       </div>
 
       <div>
-        <p>{{ form.service.label_tag }}</p>
-        <p>{{ form.service }}</p>
-        {% if form.service.errors %}
-          <div class="error">{{ form.service.errors.0 }}</div>
-        {% endif %}
-      </div>
-
-      <div>
         <p>{{ form.documentation.label_tag }}</p>
         <div class="input_file_update">
           <p>Curent file: 
-            <button><a target="_blank" href="{{ form.instance.documentation.url }}">Go to file</a></button>
+            <a target="_blank" href="{{ form.instance.documentation.url }}">open file in a new window</a>
           </p>
           Upload a new file: {{ form.documentation }}
         </div>
@@ -59,7 +51,7 @@
     </div>
     <button class="user_profile_bottom_buttoms" type="submit">Create</button>
     <button class="user_profile_bottom_buttoms">
-      <a href="{% url "contracts:contracts_list" %}">Back</a>
+      <a href="{% url "contracts:contracts_detail" pk=object.pk %}">Back</a>
     </button>
 
   </form>

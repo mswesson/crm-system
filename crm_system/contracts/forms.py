@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import Contract
+from clients.models import Client
 
 
 class ContractForm(forms.ModelForm):
@@ -12,6 +13,7 @@ class ContractForm(forms.ModelForm):
             "documentation",
             "end_date",
             "budget",
+            "client",
         ]
         widgets = {
             "documentation": forms.FileInput(attrs={"class": "custom-upload"}),
@@ -19,4 +21,8 @@ class ContractForm(forms.ModelForm):
 
     end_date = forms.DateTimeField(
         widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
+    )
+
+    client = forms.ModelChoiceField(
+        queryset=Client.objects.filter(is_active=False),
     )

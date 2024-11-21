@@ -1,6 +1,11 @@
 """This is a file with the main project settings"""
 
 from pathlib import Path
+from django.urls import reverse_lazy
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASE_DIR = BASE_DIR / "database"
@@ -24,10 +29,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     "users.apps.UsersConfig",
     "services.apps.ServicesConfig",
     "advertising.apps.AdvertisingConfig",
     "contracts.apps.ContractsConfig",
+    "clients.apps.ClientsConfig",
 ]
 
 MIDDLEWARE = [
@@ -122,3 +129,23 @@ MEDIA_ROOT = BASE_DIR / "media"
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": (
+        "rest_framework.pagination.PageNumberPagination"
+    ),
+    "PAGE_SIZE": 10,
+}
+
+TOKENS_API = [
+    *(os.getenv("TOKENS_API", "test_token").split(","))
+]
+
+LOGIN_URL = reverse_lazy("users:login")
+
+GROUPS = {
+    1: "administrator",
+    2: "operator",
+    3: "marketer",
+    4: "manager",
+}

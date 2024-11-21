@@ -1,0 +1,21 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Login
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>Login</h1>
+    Please enter your login details
+  </div>
+  <div class="form_create_services">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="flex_box">
+        <button class="button_login_panel" type="submit">Enter</button>
+      </div>
+    </form>
+  </div>
+{% endblock body %}

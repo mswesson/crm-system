@@ -1,5 +1,9 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.http import HttpRequest
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.db.models import Q
+from django.conf import settings
 from django.views.generic import (
     ListView,
     CreateView,
@@ -8,14 +12,12 @@ from django.views.generic import (
     View,
     DetailView,
 )
-from django.urls import reverse_lazy
-from django.db.models import Q
 
 from .models import Service
 from .forms import ServiceForm
 
 
-class ServicesListView(ListView):
+class ServicesListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """
     Список услуг
 
@@ -25,6 +27,12 @@ class ServicesListView(ListView):
     model = Service
     template_name = "services/services_list.html"
     paginate_by = 3
+
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name=settings.GROUPS[3]
+        ).exists()
+        return passes
 
     def get_queryset(self):
         """
@@ -43,7 +51,7 @@ class ServicesListView(ListView):
         return queryset
 
 
-class ServicesCreateView(CreateView):
+class ServicesCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     """
     Создание новой услуги
 
@@ -55,8 +63,14 @@ class ServicesCreateView(CreateView):
     form_class = ServiceForm
     success_url = reverse_lazy("services:services_list")
 
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name=settings.GROUPS[3]
+        ).exists()
+        return passes
 
-class ServicesUpdateView(UpdateView):
+
+class ServicesUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """
     Изменение существующей услуги
 
@@ -68,8 +82,14 @@ class ServicesUpdateView(UpdateView):
     form_class = ServiceForm
     success_url = reverse_lazy("services:services_list")
 
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name=settings.GROUPS[3]
+        ).exists()
+        return passes
 
-class ServicesDeleteConfirmView(View):
+
+class ServicesDeleteConfirmView(LoginRequiredMixin, UserPassesTestMixin, View):
     """
     Подтверждение удаления
 
@@ -84,8 +104,14 @@ class ServicesDeleteConfirmView(View):
             request, "services/services_confirm_delete.html", context
         )
 
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name=settings.GROUPS[3]
+        ).exists()
+        return passes
 
-class ServicesDeleteView(DeleteView):
+
+class ServicesDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     Удаление существующей услуги
 
@@ -95,9 +121,21 @@ class ServicesDeleteView(DeleteView):
     model = Service
     success_url = reverse_lazy("services:services_list")
 
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name=settings.GROUPS[3]
+        ).exists()
+        return passes
 
-class ServicesDetailView(DetailView):
+
+class ServicesDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Личный кабинет пользователя"""
 
     model = Service
     template_name = "services/service_detail.html"
+
+    def test_func(self) -> bool | None:
+        passes = self.request.user.groups.filter(
+            name=settings.GROUPS[3]
+        ).exists()
+        return passes

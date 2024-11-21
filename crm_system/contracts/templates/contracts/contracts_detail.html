@@ -8,23 +8,38 @@
   <div class="user_profile_head_info flex_box">
     <h1>Contract "{{ object.title }}"</h1>
   </div>
+
   <div class="user_profile_other_info">
-    <p><b>Service: </b> {{ object.service }}</p>
-    <p><b>Client: </b>!!! добавить !!!</p>
+    <p>
+      <b>Service: </b> 
+      <a href="{% url "services:services_detail" pk=object.service.pk %}">{{ object.service }}</a>
+    </p>
+
+    <p>
+      <b>Client:</b>
+      <a href="{% url "clients:active_detail" pk=object.client.pk %}">{{ object.client }}</a>
+    </p>
+
+    <p>
+      <b>Documentation: </b>
+      <a target="_blank" href="{{ object.documentation.url }}">open file in a new window</a>
+    </p>
+
     <p><b>Start date:</b> {{ object.start_date }}</p>
     <p><b>End date:</b> {{ object.end_date }}</p>
     <p><b>Budget: </b>${{ object.budget }}</p>
   </div>
+
   <button class="user_profile_bottom_buttoms">
-    <a href="{% url "contracts:contracts_list" %}">Back</a>
+    <a href="{% url "contracts:contracts_list" %}">Contracts list</a>
   </button>
-  <button class="user_profile_bottom_buttoms">
-    <a target="_blank" href="{{ object.documentation.url }}">File documentation</a>
-  </button>
+
   <button class="user_profile_bottom_buttoms">
     <a href="{% url "contracts:contracts_update" pk=object.pk %}">Update</a>
   </button>
+
   <button class="user_profile_bottom_buttoms">
-    <a href="{% url "contracts:contracts_delete_confirm" pk=object.pk %}">Delete</a>
+    <a href="{% url "contracts:contracts_delete_confirm" pk=object.pk %}">Terminate the contract</a>
   </button>
+
 {% endblock body %}

@@ -27,4 +27,5 @@ class Service(models.Model):
         return self.description[:140] + "..."
 
     def __str__(self):
-        return self.title
+        full_title = f"{self.pk} - {self.title}"
+        return full_title

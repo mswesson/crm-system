@@ -1,0 +1,54 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Active client
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>Active client</h1>
+  </div>
+  <div class="user_profile_other_info">
+    <p><b>Full name:</b> 
+      {{ object.first_name }} 
+
+      {% if object.middle_name %}
+        {{ object.middle_name }} 
+      {% endif %}
+
+      {{ object.last_name }}
+    </p>
+    <p><b>Phone number:</b> {{ object.phone_number }}</p>
+    <p><b>Email:</b> {{ object.email }}</p>
+    <p>
+      <b>Service provided: </b> 
+      <a href="{% url "services:services_detail" pk=object.contract.service.pk %}">
+        {{ object.contract.service.title }}
+      </a>
+    </p>
+    <p>
+      <b>Contract: </b>
+      <a href="{% url "contracts:contracts_detail" pk=object.contract.pk %}">
+        {{ object.contract.title }}
+      </a>
+    </p>
+    <p>
+      <b>End of contract: </b>
+      {{ object.contract.end_date }}
+    </p>
+    <p><b>Next interaction date: </b>{{ object.next_interaction_date }}</p>
+    <div class="text_container" >
+      <p class="text_container_title"><b>Notes</b></p>
+      {{ object.notes }}
+    </div>
+  </div>
+
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "clients:active_list" %}">Active clients list</a>
+  </button>
+
+  <button class="user_profile_bottom_buttoms">
+    <a href="{% url "clients:active_update" pk=object.pk %}">Update</a>
+  </button>
+
+{% endblock body %}

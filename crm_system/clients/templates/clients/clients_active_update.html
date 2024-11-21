@@ -1,0 +1,85 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  Updating a active client
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>Updating a active client</h1>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form_create_services">
+      <div>
+        <p>{{ form.first_name.label_tag }}</p>
+        <p>{{ form.first_name }}</p>
+
+        {% if form.first_name.errors %}
+          <div class="error">{{ form.first_name.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.last_name.label_tag }}</p>
+        <p>{{ form.last_name }}</p>
+        {% if form.last_name.errors %}
+          <div class="error">{{ form.last_name.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.middle_name.label_tag }}</p>
+        <p>{{ form.middle_name }}</p>
+        {% if form.middle_name.errors %}
+          <div class="error">{{ form.middle_name.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.budget.label_tag }}</p>
+        <p>{{ form.budget }}</p>
+        {% if form.budget.errors %}
+          <div class="error">{{ form.budget.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.phone_number.label_tag }}</p>
+        <p>{{ form.phone_number }}</p>
+        {% if form.phone_number.errors %}
+          <div class="error">{{ form.phone_number.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.email.label_tag }}</p>
+        <p>{{ form.email }}</p>
+        {% if form.email.errors %}
+          <div class="error">{{ form.email.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.next_interaction_date.label_tag }}</p>
+        <p>{{ form.next_interaction_date }}</p>
+        {% if form.next_interaction_date.errors %}
+          <div class="error">{{ form.next_interaction_date.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div>
+        <p>{{ form.notes.label_tag }}</p>
+        <p>{{ form.notes }}</p>
+        {% if form.notes.errors %}
+          <div class="error">{{ form.notes.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+    </div>
+    <button class="user_profile_bottom_buttoms" type="submit">Update</button>
+    <button class="user_profile_bottom_buttoms">
+      <a href="{% url "clients:active_detail" pk=object.pk %}">Back</a>
+    </button>
+  </form>
+{% endblock body %}

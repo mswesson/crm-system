@@ -25,7 +25,6 @@
       {% endif %}
     </p>
   </div>
-  {% if user.is_staff and user.pk == object.pk %}
   <div class="flex_box_left">
     <div class="user_profile_bottom_buttoms">
       <button><a href="{% url "services:services_list" %}">Services</a></button>
@@ -37,11 +36,16 @@
       <button><a href="{% url "contracts:contracts_list" %}">Contracts</a></button>
     </div>
     <div class="user_profile_bottom_buttoms">
-      <button><a href="https://www.google.com">Сlients</a></button>
+      <button><a href="{% url "clients:potential_list" %}">Potential clients</a></button>
     </div>
     <div class="user_profile_bottom_buttoms">
-      <button><a href="https://www.google.com">Potential clients</a></button>
+      <button><a href="{% url "clients:active_list" %}">Active clients</a></button>
+    </div>
+    <div>
+      <form action="{% url "users:logout" %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+      </form>
     </div>
   </div>
-  {% endif %}
 {% endblock body %}
