@@ -27,21 +27,30 @@
   </div>
   <div class="flex_box_left">
     <div class="user_profile_bottom_buttoms">
-      <button><a href="{% url "services:services_list" %}">Services</a></button>
-    </div>
-    <div class="user_profile_bottom_buttoms">
       <button><a href="{% url "advertising:advertising_list" %}">Advertising</a></button>
     </div>
-    <div class="user_profile_bottom_buttoms">
-      <button><a href="{% url "contracts:contracts_list" %}">Contracts</a></button>
-    </div>
-    <div class="user_profile_bottom_buttoms">
-      <button><a href="{% url "clients:potential_list" %}">Potential clients</a></button>
-    </div>
-    <div class="user_profile_bottom_buttoms">
-      <button><a href="{% url "clients:active_list" %}">Active clients</a></button>
-    </div>
-    <div>
+    
+    {% for group in user.groups.all %}
+      {% if group.name == "administrator" or group.name == "marketer" %}
+        <div class="user_profile_bottom_buttoms">
+          <button><a href="{% url "services:services_list" %}">Services</a></button>
+        </div>
+      {% elif group.name == "administrator" or group.name == "manager" %}
+        <div class="user_profile_bottom_buttoms">
+          <button><a href="{% url "contracts:contracts_list" %}">Contracts</a></button>
+        </div>
+        <div class="user_profile_bottom_buttoms">
+          <button><a href="{% url "clients:potential_list" %}">Potential clients</a></button>
+        </div>
+        <div class="user_profile_bottom_buttoms">
+          <button><a href="{% url "clients:active_list" %}">Active clients</a></button>
+        </div>
+      {% elif group.name == "administrator" or group.name == "operator" %}
+        <div class="user_profile_bottom_buttoms">
+          <button><a href="{% url "clients:potential_list" %}">Potential clients</a></button>
+        </div>
+      {% endif %}
+    {% endfor %}
       <form action="{% url "users:logout" %}" method="post">
         {% csrf_token %}
         <button type="submit">Logout</button>

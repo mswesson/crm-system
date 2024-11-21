@@ -65,7 +65,7 @@ class ServicesCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(
-            name=settings.GROUPS[3]
+            name__in=[settings.GROUPS[1], settings.GROUPS[3]]
         ).exists()
         return passes
 
@@ -84,7 +84,7 @@ class ServicesUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(
-            name=settings.GROUPS[3]
+            name__in=[settings.GROUPS[1], settings.GROUPS[3]]
         ).exists()
         return passes
 
@@ -106,7 +106,7 @@ class ServicesDeleteConfirmView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(
-            name=settings.GROUPS[3]
+            name__in=[settings.GROUPS[1], settings.GROUPS[3]]
         ).exists()
         return passes
 
@@ -123,7 +123,7 @@ class ServicesDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(
-            name=settings.GROUPS[3]
+            name__in=[settings.GROUPS[1], settings.GROUPS[3]]
         ).exists()
         return passes
 
@@ -136,6 +136,6 @@ class ServicesDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(
-            name=settings.GROUPS[3]
+            name__in=[settings.GROUPS[1], settings.GROUPS[3]]
         ).exists()
         return passes
