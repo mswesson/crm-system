@@ -16,10 +16,9 @@ from django.views.generic import (
     View,
 )
 
-from clients.models import Client
 from services.models import Service
 from .models import Contract
-from .forms import ContractForm
+from .forms import ContractForm, ContractUpdateForm
 
 
 class ContractsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -93,14 +92,16 @@ class ContractCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
         client.next_interaction_date = end_date
         client.is_active = True
-        client.notes += f"\n- The contract has been signed ({timezone.now()})"
+        client.notes += (
+            f"\n- The contract has been signed. End date {end_date}"
+        )
         client.save()
         return super().form_valid(form)
 
 
 class ContractUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Contract
-    form_class = ContractForm
+    form_class = ContractUpdateForm
     template_name = "contracts/contracts_update.html"
     success_url = reverse_lazy("contracts:contracts_list")
 
@@ -109,6 +110,26 @@ class ContractUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             name__in=[settings.GROUPS[1], settings.GROUPS[4]]
         ).exists()
         return passes
+
+    def form_valid(self, form):
+        contract = self.object
+        client = contract.client
+
+        if not client.is_active:
+            raise ValidationError("The client must be active")
+
+        end_date = contract.end_date
+
+        # если дата взаимодействия с клиентом раньше чем окончание измененного
+        # контракта, то дата взаимодействия останется. В другом случае
+        # изменится на дату окончания контракта
+        if client.next_interaction_date > end_date:
+            client.next_interaction_date = end_date
+
+        client.is_active = True
+        client.notes += f"\n- Contract end date moved to {end_date}"
+        client.save()
+        return super().form_valid(form)
 
 
 class ContractDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -153,7 +174,7 @@ class ContractDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         object.client.is_active = False
         object.client.next_interaction_date = timezone.now()
         object.client.notes += (
-            f"\n- The contract has been terminated ({timezone.now()})"
+            f"\n- The contract has been terminated {timezone.now()}"
         )
         object.client.save()
         return super().form_valid(form)

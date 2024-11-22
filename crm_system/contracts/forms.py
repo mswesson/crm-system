@@ -26,3 +26,21 @@ class ContractForm(forms.ModelForm):
     client = forms.ModelChoiceField(
         queryset=Client.objects.filter(is_active=False),
     )
+
+
+class ContractUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Contract
+        fields = [
+            "title",
+            "documentation",
+            "end_date",
+            "budget",
+        ]
+        widgets = {
+            "documentation": forms.FileInput(attrs={"class": "custom-upload"}),
+        }
+
+    end_date = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
+    )
