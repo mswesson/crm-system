@@ -16,6 +16,8 @@ from django.views.generic import (
     View,
 )
 
+from clients.models import Client
+from services.models import Service
 from .models import Contract
 from .forms import ContractForm
 
@@ -64,10 +66,18 @@ class ContractCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def get_initial(self):
         client_pk = self.request.GET.get("client_pk")
         service_pk = self.request.GET.get("service_pk")
+        service = Service.objects.get(pk=service_pk)
+        client = Client.objects.get(pk=client_pk)
+
         initial = super().get_initial()
 
+        initial["title"] = (
+            f"{client.last_name[:1]}. {client.first_name} "
+            f"({timezone.now().date()}) - {service.title}"
+        )
         initial["client"] = client_pk
         initial["service"] = service_pk
+        initial["budget"] = service.price
         return initial
 
     def form_valid(self, form):
@@ -142,6 +152,8 @@ class ContractDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         object: Contract = self.object
         object.client.is_active = False
         object.client.next_interaction_date = timezone.now()
-        object.client.notes += f"\n- The contract has been terminated ({timezone.now()})"
+        object.client.notes += (
+            f"\n- The contract has been terminated ({timezone.now()})"
+        )
         object.client.save()
         return super().form_valid(form)
