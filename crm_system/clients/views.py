@@ -11,6 +11,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.conf import settings
+from django.db.models import Value
+from django.db.models.functions import Concat
 from django.views.generic import (
     ListView,
     UpdateView,
@@ -32,7 +34,7 @@ class PotentialClientListView(
 ):
     model = Client
     template_name = "clients/clients_potential_list.html"
-    paginate_by = 4
+    paginate_by = 5
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(
@@ -59,10 +61,12 @@ class PotentialClientListView(
         queryset = queryset.filter(is_active=False)
 
         if search:
-            queryset = queryset.filter(
-                Q(first_name__icontains=search)
-                | Q(last_name__icontains=search)
-                | Q(advertising_company__title__icontains=search)
+            queryset = queryset.annotate(
+                full_name=Concat("first_name", Value(" "), "last_name")
+            ).filter(
+                Q(full_name__icontains=search)
+                | Q(phone_number__icontains=search)
+                | Q(email__icontains=search)
             )
 
         if today_interaction_clients:
@@ -211,10 +215,12 @@ class ActiveClientListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         queryset = queryset.filter(is_active=True)
 
         if search:
-            queryset = queryset.filter(
-                Q(first_name__icontains=search)
-                | Q(last_name__icontains=search)
-                | Q(advertising_company__title__icontains=search)
+            queryset = queryset.annotate(
+                full_name=Concat("first_name", Value(" "), "last_name")
+            ).filter(
+                Q(full_name__icontains=search)
+                | Q(phone_number__icontains=search)
+                | Q(email__icontains=search)
             )
 
         return queryset

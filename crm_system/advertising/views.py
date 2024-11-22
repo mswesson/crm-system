@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.views.generic import (
     CreateView,
     ListView,
@@ -30,6 +31,7 @@ def get_ling_detail_or_statistics(user: User):
 class AdvertisingCompaniesList(LoginRequiredMixin, ListView):
     model = AdvertisingCompany
     template_name = "advertising/advertising_list.html"
+    paginate_by = 5
 
     def get_context_data(self, **kwargs) -> dict:
         res = super().get_context_data(**kwargs)
@@ -50,6 +52,23 @@ class AdvertisingCompaniesList(LoginRequiredMixin, ListView):
                 )
 
         return res
+
+    def get_queryset(self):
+        """
+        Кастомная подгрузка объектов модели
+
+        Реализовал поиск с помощью GET запроса с параметром 'search'
+        """
+        search = self.request.GET.get("search")
+        queryset = super().get_queryset()
+
+        if search:
+            queryset = queryset.filter(
+                Q(title__icontains=search)
+                | Q(service__title__icontains=search)
+            )
+
+        return queryset
 
 
 class AdvertisingCompaniesCreate(

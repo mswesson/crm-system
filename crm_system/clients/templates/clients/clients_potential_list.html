@@ -15,20 +15,29 @@ Potential clients
     </h1>
   </div>
   
-  <div class="flex_box_left">
-    <button class="user_profile_bottom_buttoms">
-      <a href="{% url "users:profile" pk=user.pk %}">My profile</a>
-    </button>
+  <div class="flex_box_left flex_box_left_right">
+    <div class="flex_box_left">
+      <button class="user_profile_bottom_buttoms">
+        <a href="{% url "users:profile" pk=user.pk %}">My profile</a>
+      </button>
+  
+      <form method="get" action="{% url 'clients:potential_list' %}">
+        {% if request.GET.today_interaction == 'true' %}
+          <input type="hidden" name="today_interaction" value="false">
+          <button type="submit">Show all clients</button>
+        {% else %}
+          <input type="hidden" name="today_interaction" value="true">
+          <button type="submit">Show today interaction</button>
+        {% endif %}
+      </form>
+    </div>
 
-    <form method="get" action="{% url 'clients:potential_list' %}">
-      {% if request.GET.today_interaction == 'true' %}
-        <input type="hidden" name="today_interaction" value="false">
-        <button type="submit">Show all clients</button>
-      {% else %}
-        <input type="hidden" name="today_interaction" value="true">
-        <button type="submit">Show today interaction</button>
-      {% endif %}
-    </form>
+    <div>
+      <form style="margin: 10px;" method="get" action="{% url 'clients:potential_list' %}">
+        <input style="width: auto;" type="text" name="search" placeholder="Full name, phone, email" value="{{ request.GET.search }}">
+        <button type="submit">Search</button>
+      </form>
+    </div>
   </div>
 
   <div>
@@ -56,5 +65,23 @@ Potential clients
         </div>
       </div>
     {% endfor %}
+  </div>
+
+  <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
   </div>
 {% endblock body %}
