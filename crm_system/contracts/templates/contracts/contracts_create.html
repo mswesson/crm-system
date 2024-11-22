@@ -61,9 +61,16 @@
       </div>
     </div>
     <button class="user_profile_bottom_buttoms" type="submit">Create</button>
-    <button class="user_profile_bottom_buttoms">
-      <a href="{% url "contracts:contracts_list" %}">Back</a>
-    </button>
+    {% if request.GET.client_pk %}
+      <button class="user_profile_bottom_buttoms">
+        <a href="{% url "clients:potential_detail" pk=request.GET.client_pk %}">Back</a>
+      </button>
+    {% else %}
+      <button class="user_profile_bottom_buttoms">
+        <a href="{% url "contracts:contracts_list" %}">Contracts list</a>
+      </button>
+    {% endif %}
+    
 
   </form>
 {% endblock body %}

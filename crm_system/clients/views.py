@@ -107,7 +107,11 @@ class PotentialClientUpdateView(
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(
-            name__in=[settings.GROUPS[1], settings.GROUPS[2]]
+            name__in=[
+                settings.GROUPS[1],
+                settings.GROUPS[2],
+                settings.GROUPS[4],
+            ]
         ).exists()
         return passes
 

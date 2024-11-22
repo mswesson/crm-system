@@ -1,4 +1,5 @@
 {% extends "users/base.html" %}
+{% load custom_filters %}
 
 {% block title %}
   Potential client
@@ -33,28 +34,37 @@
       </a>
     </p>
     <p><b>Next interaction date: </b>{{ object.next_interaction_date }}</p>
-    <div class="text_container" >
+    <div>
       <p class="text_container_title"><b>Notes</b></p>
-      {{ object.notes }}
+      <div class="text_container">{{ object.notes }}</div>
     </div>
   </div>
 
-  <form method="get" action="{% url 'contracts:contracts_create' %}">
+  <div class="flex_box_left">
+    <button class="user_profile_bottom_buttoms">
+      <a href="{% url "clients:potential_list" %}">Potential clients list</a>
+    </button>
+
+    <form method="get" action="{% url 'contracts:contracts_create' %}">
       <input type="hidden" name="client_pk" value="{{ object.pk }}">
       <input type="hidden" name="service_pk" value="{{ object.advertising_company.service.pk}}">
       <button type="submit">Sign the contract</button>
-  </form>
+    </form>
+  
+    <button class="user_profile_bottom_buttoms">
+      <a href="{% url "clients:potential_update" pk=object.pk %}">Update</a>
+    </button>
+  
+    {% with user.groups.all|map:"name" as user_groups %}
+      {% if "administrator" in user_groups or "operator" in user_groups %}
+        <button class="user_profile_bottom_buttoms">
+          <a href="{% url "clients:potential_delete_confirm" pk=object.pk %}">Delete</a>
+        </button>
+      {% endif %}
+    {% endwith %}
+  </div>
 
-  <button class="user_profile_bottom_buttoms">
-    <a href="{% url "clients:potential_list" %}">Potential clients list</a>
-  </button>
+  
 
-
-  <button class="user_profile_bottom_buttoms">
-    <a href="{% url "clients:potential_update" pk=object.pk %}">Update</a>
-  </button>
-
-  <button class="user_profile_bottom_buttoms">
-    <a href="{% url "clients:potential_delete_confirm" pk=object.pk %}">Delete</a>
-  </button>
+  
 {% endblock body %}

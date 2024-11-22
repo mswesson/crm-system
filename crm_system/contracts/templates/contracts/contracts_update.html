@@ -1,12 +1,12 @@
 {% extends "users/base.html" %}
 
 {% block title %}
-  Creating a contract
+  Update contract
 {% endblock title %}
 
 {% block body %}
   <div class="user_profile_head_info flex_box">
-    <h1>Creating a contract</h1>
+    <h1>Update contract</h1>
   </div>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -50,6 +50,7 @@
       </div>
     </div>
     <button class="user_profile_bottom_buttoms" type="submit">Create</button>
+    
     <button class="user_profile_bottom_buttoms">
       <a href="{% url "contracts:contracts_detail" pk=object.pk %}">Back</a>
     </button>

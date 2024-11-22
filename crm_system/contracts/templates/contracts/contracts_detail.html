@@ -6,10 +6,14 @@
 
 {% block body %}
   <div class="user_profile_head_info flex_box">
-    <h1>Contract "{{ object.title }}"</h1>
+    <h1>Contract</h1>
   </div>
 
   <div class="user_profile_other_info">
+    <p>
+      <b>Title: </b>
+      {{ object.title }}
+    </p>
     <p>
       <b>Service: </b> 
       <a href="{% url "services:services_detail" pk=object.service.pk %}">{{ object.service }}</a>
@@ -27,7 +31,7 @@
 
     <p><b>Start date:</b> {{ object.start_date }}</p>
     <p><b>End date:</b> {{ object.end_date }}</p>
-    <p><b>Budget: </b>${{ object.budget }}</p>
+    <p><b>Price: </b>${{ object.budget }}</p>
   </div>
 
   <button class="user_profile_bottom_buttoms">

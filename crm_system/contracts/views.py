@@ -83,6 +83,7 @@ class ContractCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
         client.next_interaction_date = end_date
         client.is_active = True
+        client.notes += f"\n- The contract has been signed ({timezone.now()})"
         client.save()
         return super().form_valid(form)
 
@@ -140,7 +141,7 @@ class ContractDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def form_valid(self, form):
         object: Contract = self.object
         object.client.is_active = False
-
         object.client.next_interaction_date = timezone.now()
+        object.client.notes += f"\n- The contract has been terminated ({timezone.now()})"
         object.client.save()
         return super().form_valid(form)

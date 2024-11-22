@@ -6,18 +6,25 @@
 
 {% block body %}
   <div class="user_profile_head_info flex_box">
-    <h1>Confirmation of advertising campaign removal</h1>
+    <h1>Confirm deletion of advertising company</h1>
   </div>
+
   <div class="user_profile_other_info">
-    <p></p>Do you really want to delete the advertising company "{{ object.title }}"</p>
+    <p>
+      Are you sure you want to delete the ad campaign? 
+      If there are potential or active clients interacting with it, 
+      this may lead to data loss and irreversible consequences.
+    </p>
   </div>
+
   <div class="flex_box_left">
     <form action="{% url "advertising:advertising_delete" pk=object.pk %}" method="post">
       {% csrf_token %}
-      <button class="user_profile_bottom_buttoms button_bad">Delete</button>
+      <button class="user_profile_bottom_buttoms">Delete</button>
     </form>
-    <button class="user_profile_bottom_buttoms button_good">
-      <a href="{% url "advertising:advertising_list" %}">Back</a>
+
+    <button class="user_profile_bottom_buttoms">
+      <a href="{% url "advertising:advertising_detail" pk=object.pk %}">Back</a>
     </button>
   </div>
 {% endblock body %}

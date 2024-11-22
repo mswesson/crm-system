@@ -25,21 +25,16 @@
     </div>
   </div>
   <div>
-    {% for service in object_list %}
+    {% for object in object_list %}
       <div class="services_list_object">
-        <p class="services_list_object_title"><b>{{ service.title }}</b></p>
+        <p class="services_list_object_title">
+          <b>
+            <a href="{% url "services:services_detail" pk=object.pk %}">{{ object.title }}</a>
+          </b>
+        </p>
         <div class="services_list_object_other_info">
-          <p>{{ service.short_description }}</p>
+          <p>{{ object.short_description }}</p>
         </div>
-          <button class="user_profile_bottom_buttoms">
-            <a href="{% url "services:services_detail" pk=service.pk %}">Detail</a>
-          </button>
-          <button class="user_profile_bottom_buttoms">
-            <a href="{% url "services:services_update" pk=service.pk %}">Update</a>
-          </button>
-          <button class="user_profile_bottom_buttoms">
-            <a href="{% url "services:services_confirm_delete" pk=service.pk %}">Delete</a>
-          </button>
       </div>
     {% endfor %}
   </div>

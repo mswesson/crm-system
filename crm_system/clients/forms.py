@@ -12,7 +12,6 @@ class ClientForm(forms.ModelForm):
             "middle_name",
             "phone_number",
             "email",
-            "advertising_company",
             "notes",
             "next_interaction_date",
         ]

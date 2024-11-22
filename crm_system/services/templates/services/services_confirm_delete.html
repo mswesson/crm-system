@@ -8,16 +8,23 @@
   <div class="user_profile_head_info flex_box">
     <h1>Confirm deletion of service</h1>
   </div>
+
   <div class="user_profile_other_info">
-    <p></p>Do you really want to delete the service "{{ object.title }}"</p>
+    <p>
+      Are you sure you want to delete the service? 
+      With active contracts, this will result in 
+      irreversible consequences and loss of data.
+    </p>
   </div>
+
   <div class="flex_box_left">
     <form action="{% url "services:services_delete" pk=object.pk %}" method="post">
       {% csrf_token %}
-      <button class="user_profile_bottom_buttoms button_bad">Delete</button>
+      <button class="user_profile_bottom_buttoms">Delete</button>
     </form>
-    <button class="user_profile_bottom_buttoms button_good">
-      <a href="{% url "services:services_list" %}">Back</a>
+
+    <button class="user_profile_bottom_buttoms">
+      <a href="{% url "services:services_detail" pk=object.pk %}">Back</a>
     </button>
   </div>
 {% endblock body %}

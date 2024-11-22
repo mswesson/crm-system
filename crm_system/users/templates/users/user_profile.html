@@ -7,16 +7,15 @@
 
 {% block body %}
   <div class="user_profile_head_info flex_box">
-    {% if object.pk == user.pk %}
-      <h1>My profile @{{ object.username }}</h1>
-    {% else %}
-      <h1>Profile @{{ object.username }}</h1>
-    {% endif %}
+    <h1>Employee profile</h1>
   </div>
   <div class="user_profile_other_info">
-    <p><b>{{ object.first_name}} {{ object.last_name }}</b></p>
-    <p>Email: {{ object.email }}</p>
-    <p>Role: 
+    This is your main page. From here you can access the key functions of the system. 
+    The role can be changed by the administrator. Have a nice day!
+    <p><b>Username: </b>{{ object.username }}</p>
+    <p><b>Full name: </b>{{ object.first_name}} {{ object.last_name }}</p>
+    <p><b>Email: </b>{{ object.email }}</p>
+    <p><b>Role: </b>
       {% if object.groups.all %}
         {% for role in object.groups.all %}
           {{ role }}{% if not forloop.last %}, {% endif %}  

@@ -30,27 +30,30 @@ Potential clients
       {% endif %}
     </form>
   </div>
+
   <div>
     {% for object in object_list %}
       <div class="services_list_object">
-        <p class="services_list_object_title"><b>
-          {{ object.first_name }} 
+        <p class="services_list_object_title">
+          <b>
+            <a href="{% url "clients:potential_detail" pk=object.pk %}">
+              {{ object.first_name }} 
 
-          {% if object.middle_name %}
-            {{ object.middle_name }} 
-          {% endif %}
+              {% if object.middle_name %}
+                {{ object.middle_name }} 
+              {% endif %}
 
-          {{ object.last_name }}
-        </b></p>
+              {{ object.last_name }}
+            </a>
+          </b>
+        </p>
+
         <div class="services_list_object_other_info">
           <p>
             Interested in the advertising company "{{ object.advertising_company.title }}"
             which promotes the service "{{ object.advertising_company.service.title }}"
           </p>
         </div>
-          <button class="user_profile_bottom_buttoms">
-            <a href="{% url "clients:potential_detail" pk=object.pk %}">Detail</a>
-          </button>
       </div>
     {% endfor %}
   </div>

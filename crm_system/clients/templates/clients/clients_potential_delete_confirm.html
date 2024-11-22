@@ -17,9 +17,9 @@
   <div class="flex_box_left">
     <form action="{% url "clients:potential_delete" pk=object.pk %}" method="post">
       {% csrf_token %}
-      <button class="user_profile_bottom_buttoms button_bad">Delete</button>
+      <button class="user_profile_bottom_buttoms">Delete</button>
     </form>
-    <button class="user_profile_bottom_buttoms button_good">
+    <button class="user_profile_bottom_buttoms">
       <a href="{% url "clients:potential_detail" pk=object.pk %}">Back</a>
     </button>
   </div>
