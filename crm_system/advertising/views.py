@@ -1,8 +1,9 @@
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.views.generic import (
     CreateView,
     ListView,
@@ -16,11 +17,39 @@ from .models import AdvertisingCompany
 from .forms import AdvertisingCompanyForm
 
 
-class AdvertisingCompaniesList(
-    LoginRequiredMixin, ListView
-):
+def get_ling_detail_or_statistics(user: User):
+    groups_user = user.groups.values_list("name", flat=True)
+    if groups_user in [settings.GROUPS[1], settings.GROUPS[1]]:
+        link = reverse_lazy("advertising:advertising_detail")
+    else:
+        link = reverse_lazy("advertising:advertising_statistics")
+
+    return link
+
+
+class AdvertisingCompaniesList(LoginRequiredMixin, ListView):
     model = AdvertisingCompany
     template_name = "advertising/advertising_list.html"
+
+    def get_context_data(self, **kwargs) -> dict:
+        res = super().get_context_data(**kwargs)
+
+        groups_user = self.request.user.groups.values_list("name", flat=True)
+        if (
+            settings.GROUPS[1] in groups_user
+            or settings.GROUPS[3] in groups_user
+        ):
+            for adv in res["object_list"]:
+                adv.link = reverse_lazy(
+                    "advertising:advertising_detail", kwargs={"pk": adv.pk}
+                )
+        else:
+            for adv in res["object_list"]:
+                adv.link = reverse_lazy(
+                    "advertising:advertising_statistics", kwargs={"pk": adv.pk}
+                )
+
+        return res
 
 
 class AdvertisingCompaniesCreate(
@@ -53,10 +82,35 @@ class AdvertisingCompaniesUpdate(
         return passes
 
 
-class AdvertisingCompaniesDetail(
-    LoginRequiredMixin, UserPassesTestMixin, DetailView
-):
+class AdvertisingCompaniesStatisticsDetail(LoginRequiredMixin, DetailView):
     model = AdvertisingCompany
+    template_name = "advertising/advertising_statistics.html"
+
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        advertising: AdvertisingCompany = self.get_object()
+        all_clients = advertising.clients
+        active_clients = all_clients.filter(is_active=True)
+        potential_clients = all_clients.filter(is_active=False)
+        company_profit = sum(
+            [client.contract.budget for client in active_clients]
+        )
+        advertising_roi = f"{company_profit / advertising.budget:.2%}"
+
+        context = {
+            "object": advertising,
+            "all_clients": all_clients,
+            "potential_clients": potential_clients,
+            "active_clients": active_clients,
+            "company_profit": company_profit,
+            "advertising_roi": advertising_roi,
+        }
+
+        return render(request, self.template_name, context)
+
+
+class AdvertisingCompaniesDetail(
+    UserPassesTestMixin, AdvertisingCompaniesStatisticsDetail
+):
     template_name = "advertising/advertising_detail.html"
 
     def test_func(self) -> bool | None:

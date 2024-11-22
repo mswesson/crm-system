@@ -7,6 +7,7 @@ from .views import (
     AdvertisingCompaniesDetail,
     AdvertisingCompaniesDeleteConfirmView,
     AdvertisingCompaniesDeleteView,
+    AdvertisingCompaniesStatisticsDetail,
 )
 
 app_name = "advertising"
@@ -22,6 +23,11 @@ urlpatterns = [
         "<int:pk>/",
         AdvertisingCompaniesDetail.as_view(),
         name="advertising_detail",
+    ),
+    path(
+        "<int:pk>/statistics/",
+        AdvertisingCompaniesStatisticsDetail.as_view(),
+        name="advertising_statistics",
     ),
     path(
         "<int:pk>/update/",

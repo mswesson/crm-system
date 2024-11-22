@@ -30,7 +30,7 @@ class ServicesListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(
-            name=settings.GROUPS[3]
+            name__in=[settings.GROUPS[1], settings.GROUPS[3]]
         ).exists()
         return passes
 

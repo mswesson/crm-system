@@ -41,7 +41,7 @@ class Client(models.Model):
     advertising_company = models.ForeignKey(
         "advertising.AdvertisingCompany",
         on_delete=models.CASCADE,
-        related_name="potential_clients",
+        related_name="clients",
     )
     notes = models.TextField(
         max_length=4000, default="", null=False, blank=True

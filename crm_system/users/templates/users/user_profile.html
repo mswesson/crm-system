@@ -1,4 +1,5 @@
 {% extends "users/base.html" %}
+{% load custom_filters %}
 
 {% block title %}
   Profile {{ object.username }}
@@ -29,28 +30,27 @@
     <div class="user_profile_bottom_buttoms">
       <button><a href="{% url "advertising:advertising_list" %}">Advertising</a></button>
     </div>
-    
-    {% for group in user.groups.all %}
-      {% if group.name == "administrator" or group.name == "marketer" %}
+
+    {% with user.groups.all|map:"name" as user_groups %}
+      {% if "administrator" in user_groups or "marketer" in user_groups %}
         <div class="user_profile_bottom_buttoms">
-          <button><a href="{% url "services:services_list" %}">Services</a></button>
-        </div>
-      {% elif group.name == "administrator" or group.name == "manager" %}
-        <div class="user_profile_bottom_buttoms">
-          <button><a href="{% url "contracts:contracts_list" %}">Contracts</a></button>
-        </div>
-        <div class="user_profile_bottom_buttoms">
-          <button><a href="{% url "clients:potential_list" %}">Potential clients</a></button>
-        </div>
-        <div class="user_profile_bottom_buttoms">
-          <button><a href="{% url "clients:active_list" %}">Active clients</a></button>
-        </div>
-      {% elif group.name == "administrator" or group.name == "operator" %}
-        <div class="user_profile_bottom_buttoms">
-          <button><a href="{% url "clients:potential_list" %}">Potential clients</a></button>
+          <button><a href="{% url 'services:services_list' %}">Services</a></button>
         </div>
       {% endif %}
-    {% endfor %}
+      {% if "administrator" in user_groups or "manager" in user_groups %}
+        <div class="user_profile_bottom_buttoms">
+          <button><a href="{% url 'contracts:contracts_list' %}">Contracts</a></button>
+        </div>
+        <div class="user_profile_bottom_buttoms">
+          <button><a href="{% url 'clients:active_list' %}">Active clients</a></button>
+        </div>
+      {% endif %}
+      {% if "administrator" in user_groups or "operator" in user_groups or "manager" in user_groups %}
+        <div class="user_profile_bottom_buttoms">
+          <button><a href="{% url 'clients:potential_list' %}">Potential clients</a></button>
+        </div>
+      {% endif %}
+    {% endwith %}
       <form action="{% url "users:logout" %}" method="post">
         {% csrf_token %}
         <button type="submit">Logout</button>

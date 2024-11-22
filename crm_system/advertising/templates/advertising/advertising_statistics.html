@@ -1,33 +1,24 @@
 {% extends "users/base.html" %}
 
 {% block title %}
-  Advertising campaign details
+  Statistics
 {% endblock title %}
 
 {% block body %}
   <div class="user_profile_head_info flex_box">
-    <h1>Detailed information about the advertising campaign</h1>
+    <h1>Advertising campaign statistics</h1>
   </div>
   <div class="user_profile_other_info">
     <p><b>Advertising company:</b> {{ object.title }}</p>
-    <p>
-      <b>Promoted service:</b> 
-      <a href="{% url "services:services_detail" pk=object.service.pk %}">{{ object.service.title }}</a>
-    </p>
-    <p><b>Promotion channel:</b> {{ object.promotion_channel }}</p>
     <p><b>Active clients: </b> {{ active_clients|length }}</p>
     <p><b>Potential clients: </b> {{ potential_clients|length }}</p>
     <p><b>Advertising campaign budget:</b> ${{ object.budget }}</p>
     <p><b>The advertising company earned: </b> ${{ company_profit }}</p>
     <p><b>Return on investment in advertising: </b> {{ advertising_roi }}</p>
+    
+
   </div>
   <button class="user_profile_bottom_buttoms">
     <a href="{% url "advertising:advertising_list" %}">Advertising list</a>
-  </button>
-  <button class="user_profile_bottom_buttoms">
-    <a href="{% url "advertising:advertising_update" pk=object.pk %}">Update</a>
-  </button>
-  <button class="user_profile_bottom_buttoms">
-    <a href="{% url "advertising:advertising_delete_confirm" pk=object.pk %}">Delete</a>
   </button>
 {% endblock body %}
