@@ -1,0 +1,21 @@
+{% extends "users/base.html" %}
+
+{% block title %}
+  No access
+{% endblock title %}
+
+{% block body %}
+  <div class="user_profile_head_info flex_box">
+    <h1>No access </h1>
+    You do not have access to perform this operation.
+  </div>
+  <div class="error_403_text">
+There are several roles in the system. Your role is <b>{{ user.groups.all.0.name }}</b>.
+
+ - The <b>administrator</b> can create, view and edit users, assign them roles and permissions.
+ - The <b>operator</b> can create, view and edit potential clients.
+ - The <b>marketer</b> can create, view and edit services and advertising campaigns.
+ - The <b>manager</b> can create, view and edit contracts, view potential clients and transfer them to active ones.
+ - <b>All roles</b> can view advertising campaign statistics.
+  </div>
+{% endblock body %}
