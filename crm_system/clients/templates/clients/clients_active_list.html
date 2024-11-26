@@ -17,9 +17,9 @@
     </div>
 
     <div>
-      <form style="margin: 10px;" method="get" action="{% url 'clients:active_list' %}">
-        <input style="width: auto;" type="text" name="search" placeholder="Full name, phone, email" value="{{ request.GET.search }}">
-        <button type="submit">Search</button>
+      <form class="search_panel" method="get" action="{% url 'clients:active_list' %}">
+        <input class="search_panel_input" type="text" name="search" placeholder="Full name, phone, email" value="{{ request.GET.search }}">
+        <button class="search_panel_input_button" type="submit">Search</button>
       </form>
     </div>
   </div>

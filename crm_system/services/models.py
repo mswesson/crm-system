@@ -23,6 +23,9 @@ class Service(models.Model):
         validators=[MinValueValidator(0, "The price cannot be below zero")],
     )
 
+    class Meta:
+        ordering = ["title"]
+
     def short_description(self):
         return self.description[:140] + "..."
 

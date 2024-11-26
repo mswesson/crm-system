@@ -48,7 +48,7 @@
     <form method="get" action="{% url 'contracts:contracts_create' %}">
       <input type="hidden" name="client_pk" value="{{ object.pk }}">
       <input type="hidden" name="service_pk" value="{{ object.advertising_company.service.pk}}">
-      <button type="submit">Sign the contract</button>
+      <button class="user_profile_bottom_buttoms" type="submit">Sign the contract</button>
     </form>
   
     <button class="user_profile_bottom_buttoms">

@@ -75,11 +75,13 @@
           <div class="error">{{ form.notes.errors.0 }}</div>
         {% endif %}
       </div>
-
     </div>
+
     <button class="user_profile_bottom_buttoms" type="submit">Update</button>
+
     <button class="user_profile_bottom_buttoms">
       <a href="{% url "clients:potential_detail" pk=object.pk %}">Back</a>
     </button>
+
   </form>
 {% endblock body %}

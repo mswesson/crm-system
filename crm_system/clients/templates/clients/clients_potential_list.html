@@ -24,18 +24,18 @@ Potential clients
       <form method="get" action="{% url 'clients:potential_list' %}">
         {% if request.GET.today_interaction == 'true' %}
           <input type="hidden" name="today_interaction" value="false">
-          <button type="submit">Show all clients</button>
+          <button class="user_profile_bottom_buttoms" type="submit">Show all clients</button>
         {% else %}
           <input type="hidden" name="today_interaction" value="true">
-          <button type="submit">Show today interaction</button>
+          <button class="user_profile_bottom_buttoms" type="submit">Show today interaction</button>
         {% endif %}
       </form>
     </div>
 
     <div>
-      <form style="margin: 10px;" method="get" action="{% url 'clients:potential_list' %}">
-        <input style="width: auto;" type="text" name="search" placeholder="Full name, phone, email" value="{{ request.GET.search }}">
-        <button type="submit">Search</button>
+      <form class="search_panel" method="get" action="{% url 'clients:potential_list' %}">
+        <input class="search_panel_input" type="text" name="search" placeholder="Full name, phone, email" value="{{ request.GET.search }}">
+        <button class="search_panel_input_button" type="submit">Search</button>
       </form>
     </div>
   </div>
