@@ -80,7 +80,11 @@ class Contract(models.Model):
             file_path = create_pdf_doc(
                 company_name=settings.COMPANY_NAME,
                 full_name_client=full_name_clients,
-                start_date=self.start_date.date(),
+                start_date=(
+                    self.start_date.date()
+                    if self.start_date
+                    else timezone.now().date()
+                ),
                 end_date=self.end_date.date(),
                 budget=self.budget,
                 save_path=(
