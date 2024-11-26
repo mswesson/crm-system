@@ -70,13 +70,23 @@ WSGI_APPLICATION = "crm_system.wsgi.application"
 
 # Database
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": DATABASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": DATABASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'myprojectdb',  # Имя базы данных
+        'USER': 'themswesson',  # Имя пользователя
+        'PASSWORD': '386790',  # Пароль пользователя
+        'HOST': 'localhost',  # Хост
+        'PORT': '5432',  # Порт
     }
 }
-
 
 # Password validation
 
