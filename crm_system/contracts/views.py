@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+import random
 from django.views.generic import (
     CreateView,
     ListView,
@@ -71,8 +72,9 @@ class ContractCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         initial = super().get_initial()
 
         initial["title"] = (
+            f"#{random.randint(0, 10000)} "
             f"{client.last_name[:1]}. {client.first_name} "
-            f"({timezone.now().date()}) - {service.title}"
+            f"- {service.title}"
         )
         initial["client"] = client_pk
         initial["service"] = service_pk
@@ -129,6 +131,9 @@ class ContractUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         client.is_active = True
         client.notes += f"\n- Contract end date moved to {end_date}"
         client.save()
+
+        contract.documentation = None
+        contract.save()
         return super().form_valid(form)
 
 

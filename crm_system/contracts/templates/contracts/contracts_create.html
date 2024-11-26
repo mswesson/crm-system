@@ -39,6 +39,7 @@
       <div>
         <p>{{ form.documentation.label_tag }}</p>
         <p>{{ form.documentation }}</p>
+        <p style="margin: 10px;" >It is strongly recommended not to upload a custom contract, leave the field blank and the contract will be generated automatically.</p>
         {% if form.documentation.errors %}
           <div class="error">{{ form.documentation.errors.0 }}</div>
         {% endif %}

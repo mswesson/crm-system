@@ -159,3 +159,5 @@ GROUPS = {
     3: "marketer",
     4: "manager",
 }
+
+COMPANY_NAME = os.getenv("COMPANY_NAME", "THEMSWESSON COMPANY")
