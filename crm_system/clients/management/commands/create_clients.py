@@ -78,9 +78,9 @@ class Command(BaseCommand):
             last_name = random.choice(last_names)
             middle_name = random.choice(middle_names)
             phone_number = (
-                f"+7-9{random.randint(10, 99)}-"
-                f"{random.randint(100, 999)}-"
-                f"{random.randint(10, 99)}-"
+                f"+79{random.randint(10, 99)}"
+                f"{random.randint(100, 999)}"
+                f"{random.randint(10, 99)}"
                 f"{random.randint(10, 99)}"
             )
             email = (
