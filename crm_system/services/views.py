@@ -26,7 +26,7 @@ class ServicesListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     model = Service
     template_name = "services/services_list.html"
-    paginate_by = 3
+    paginate_by = 5
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(

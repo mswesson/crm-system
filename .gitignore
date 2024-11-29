@@ -12,6 +12,8 @@ database/
 # Medias
 media/
 
+staticfiles/
+
 # Distribution / packaging
 .Python
 build/

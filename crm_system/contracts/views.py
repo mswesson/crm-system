@@ -25,7 +25,7 @@ from .forms import ContractForm, ContractUpdateForm
 class ContractsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Contract
     template_name = "contracts/contracts_list.html"
-    paginate_by = 3
+    paginate_by = 5
 
     def test_func(self) -> bool | None:
         passes = self.request.user.groups.filter(

@@ -12,6 +12,7 @@ django-rest-framework = "^0.1.0"
 python-dotenv = "^1.0.1"
 psycopg2 = "^2.9.10"
 fpdf = "^1.7.2"
+gunicorn = "^23.0.0"
 
 
 [build-system]

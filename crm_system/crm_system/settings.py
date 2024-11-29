@@ -11,13 +11,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASE_DIR = BASE_DIR / "database"
 DATABASE_DIR.mkdir(exist_ok=True)
 
-SECRET_KEY = (
-    "django-insecure-^!(((o863*q^5ron*kdkz&ixin2po&0^ni@jf#7j*$kc=6mr$j"
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    "django-insecure-^!(((o863*q^5ron*kdkz&ixin2po&0^ni@jf#7j*$kc=6mr$j",
 )
 
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "false") == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 
 # Application definition
@@ -70,21 +71,14 @@ WSGI_APPLICATION = "crm_system.wsgi.application"
 
 # Database
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": DATABASE_DIR / "db.sqlite3",
-#     }
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myprojectdb',  # Имя базы данных
-        'USER': 'themswesson',  # Имя пользователя
-        'PASSWORD': '386790',  # Пароль пользователя
-        'HOST': 'localhost',  # Хост
-        'PORT': '5432',  # Порт
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),  # Имя базы данных
+        "USER": os.getenv("POSTGRES_USER"),  # Имя пользователя
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),  # Пароль пользователя
+        "HOST": "db",  # Хост
+        "PORT": "5432",  # Порт
     }
 }
 
@@ -131,7 +125,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = "static/"
-STATIC_ROOT = "static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -147,9 +141,7 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
 }
 
-TOKENS_API = [
-    *(os.getenv("TOKENS_API", "test_token").split(","))
-]
+TOKENS_API = [*(os.getenv("TOKENS_API", "test_token").split(","))]
 
 LOGIN_URL = reverse_lazy("users:login")
 
@@ -160,4 +152,4 @@ GROUPS = {
     4: "manager",
 }
 
-COMPANY_NAME = os.getenv("COMPANY_NAME", "THEMSWESSON COMPANY")
+COMPANY_NAME = os.getenv("COMPANY_NAME", "UNKNOWN COMPANY")
